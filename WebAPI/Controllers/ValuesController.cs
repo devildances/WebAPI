@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using MySql.Data.MySqlClient;
 using WebAPI.Models;
+using System.Net.Http.Headers;
 
 namespace WebAPI.Controllers
 {
@@ -86,9 +87,15 @@ namespace WebAPI.Controllers
             long id;
             id = ep.saveEmployee(value);
             value._empID = id;
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+            /*HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
             response.Headers.Location = new Uri(Request.RequestUri, String.Format("values/{0}", id));
-            return response;
+            return response;*/
+            var resp = new HttpResponseMessage()
+            {
+                Content = new StringContent("[{\"Name\":\"ABC\"},[{\"A\":\"1\"},{\"B\":\"2\"},{\"C\":\"3\"}]]")
+            };
+            resp.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            return resp;
         }
 
         // PUT api/values/5
